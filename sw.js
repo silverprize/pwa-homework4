@@ -2,16 +2,16 @@ self.addEventListener('install', event => {
   event.waitUntil(
     self.caches.open('assets').then(cache => {
       return cache.addAll([
-        '/',
-        '/manifest.json',
-        '/bulma.css',
-        '/style.css',
-        '/js/script.js',
-        '/images/loader.gif',
-        '/images/newspaper.png',
-        '/images/reload.png',
-        '/template/article.html',
-        '/template/offlineAlert.html',
+        './',
+        './manifest.json',
+        './bulma.css',
+        './style.css',
+        './js/script.js',
+        './images/loader.gif',
+        './images/newspaper.png',
+        './images/reload.png',
+        './template/article.html',
+        './template/offlineAlert.html',
         'https://newsapi.org/v2/top-headlines?apiKey=42b670ccfa79499c945d915b57e3947e&country=kr'
       ]);
     })
@@ -73,7 +73,7 @@ function fetchFeed() {
 }
 
 function fetchTemplate(name) {
-  return findCacheOrFetch(`/template/${name}.html`).then(async response => {
+  return findCacheOrFetch(`./template/${name}.html`).then(async response => {
     return await response.text();
   });
 }

@@ -3,7 +3,7 @@
 
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js').then(function(registration) {
+      navigator.serviceWorker.register('./sw.js').then(function(registration) {
         // Registration was successful
         console.log('ServiceWorker registration successful with scope: ', registration.scope);
         registration.active.postMessage({what: 'fetchTemplates'});
@@ -64,7 +64,7 @@
     dom.querySelector('[data-subject]').textContent = article.title;
     dom.querySelector('[data-subject]').href = article.url;
     dom.querySelector('[data-content]').textContent = article.description;
-    dom.querySelector('[data-thumbnail]').src = article.urlToImage || '/images/newspaper.png';
+    dom.querySelector('[data-thumbnail]').src = article.urlToImage || './images/newspaper.png';
     return dom;
   }
 

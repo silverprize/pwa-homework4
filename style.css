@@ -1,0 +1,16 @@
+.button.is-loading>.spin {
+  animation:spin 1s linear infinite;
+}
+
+.image-centered {
+  margin: auto;
+}
+
+.text-overflow {
+  overflow: auto;
+  text-overflow: ellipsis;
+}
+
+@keyframes spin {
+  100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); }
+}

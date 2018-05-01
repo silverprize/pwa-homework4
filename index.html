@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="/bulma.css">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="manifest" href="/manifest.json">
+  <title>PWA 뉴스 피드</title>
+</head>
+<body>
+  <div class="section">
+    <h6 class="title has-text-centered">PWA 뉴스 피드
+        <figure class="image is-48x48 is-pulled-right">
+          <button id="updateFeed" type="button" class="button is-loading" disabled>
+            <img src="/images/reload.png" class="spin">
+          </button>
+        </figure>
+    </h6>
+    <div class="container" data-container>
+      <figure class="image is-128x128 image-centered">
+          <img src="/images/loader.gif">
+      </figure>
+    </div>
+  </div>
+  <script type="text/javascript" src="/js/script.js"></script>
+</body>
+</html>

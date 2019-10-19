@@ -1,15 +1,13 @@
-(function () {
-  const templates = {};
+(function() {
+  const offlineAlert = document.createElement('div');
+  offlineAlert.innerHTML = document.querySelector('#offlineAlert').innerHTML;
+  
+  const templates = { offlineAlert: offlineAlert.firstElementChild };
 
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js').then(registration => {
-        // Registration was successful
-        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-      }).catch(function(err) {
-        // registration failed :(
-        console.log('ServiceWorker registration failed: ', err);
-      });
+      registerServiceWorker();
+
       navigator.serviceWorker.addEventListener('message', event => {
         const what = event.data.what;
         switch (what) {
@@ -23,22 +21,23 @@
               const dom = document.createElement('div');
               dom.innerHTML = event.data.result[key];
               templates[key] = dom.firstElementChild;
-            })
-            event.source.postMessage({what: 'fetchFeed'});
+            });
+            event.source.postMessage({ what: 'fetchFeed' });
+            break;
+          case 'error':
+            const containerDom = document.querySelector('[data-container]').cloneNode();
+            containerDom.appendChild(templates.offlineAlert.cloneNode(true));
+            document.querySelector('[data-container]').replaceWith(containerDom);
             break;
         }
       });
-    });
-
-    navigator.serviceWorker.ready.then(registration => {
-      registration.active.postMessage({what: 'fetchTemplates'});
     });
 
     document.querySelector('#updateFeed').addEventListener('click', () => {
       const updateButtonDom = document.querySelector('#updateFeed');
       updateButtonDom.disabled = true;
       updateButtonDom.classList.add('is-loading');
-      navigator.serviceWorker.controller.postMessage({what: 'fetchFeed'});
+      navigator.serviceWorker.controller.postMessage({ what: 'fetchFeed' });
     });
   }
 
@@ -71,9 +70,23 @@
     return dom;
   }
 
-  function createTemplateDom(id) {
-    const dom = document.createElement('div');
-    dom.innerHTML = document.querySelector(id).innerHTML;
-    return dom.firstElementChild;
+  function registerServiceWorker() {
+    navigator.serviceWorker
+      .register('./sw.js')
+      .then(registration => {
+        // Registration was successful
+        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        console.log('ServiceWorker activated: ', registration.active);
+
+        if (registration.active) {
+          registration.active.postMessage({ what: 'fetchTemplates' });
+        } else {
+          setTimeout(registerServiceWorker);
+        }
+      })
+      .catch(function(err) {
+        // registration failed :(
+        console.log('ServiceWorker registration failed: ', err);
+      });
   }
 })();

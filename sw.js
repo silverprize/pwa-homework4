@@ -11,7 +11,6 @@ self.addEventListener('install', event => {
         './images/newspaper.png',
         './images/reload.png',
         './template/article.html',
-        './template/offlineAlert.html',
         'https://newsapi.org/v2/top-headlines?apiKey=42b670ccfa79499c945d915b57e3947e&country=kr'
       ]);
     })
@@ -31,12 +30,12 @@ self.addEventListener('message', async event => {
       break;
       
     case 'fetchTemplates':
-      const article = await fetchTemplate('article');
-      const offlineAlert = await fetchTemplate('offlineAlert');
-      event.source.postMessage({what, result: {
-        article,
-        offlineAlert
-      }});
+      try {
+        const article = await fetchTemplate('article');
+        event.source.postMessage({what, result: { article }});
+      } catch (e) {
+        event.source.postMessage({what: 'error'});
+      }
       break;
   }
 });
